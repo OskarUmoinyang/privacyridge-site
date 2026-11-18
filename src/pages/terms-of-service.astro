@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config';
+
+const title = 'Terms of service | Privacy Ridge';
+const description =
+  'Terms for using the Privacy Ridge website. The site is informational and does not create a consulting or attorney-client relationship.';
+---
+
+<Base title={title} description={description}>
+  <header class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Terms</p>
+      <h1>Terms of service</h1>
+      <p class="lede">These terms cover your use of {site.url}. They were last updated in 2026.</p>
+    </div>
+  </header>
+  <article class="section" style="padding-top: 1rem;">
+    <div class="wrap prose">
+      <h2>The site</h2>
+      <p>
+        Privacy Ridge publishes this website to describe our consulting practice. By using the site, you agree to these terms. If you do not agree, please do not use the site.
+      </p>
+      <h2>Not legal advice, and not an engagement</h2>
+      <p>
+        Content on this site is general information about privacy and AI governance. It is not legal advice, and it is not advice for your particular facts. Sending the consultation form, emailing us, or speaking with us does not create an attorney-client relationship or a consulting engagement. An engagement begins only when both sides sign a written agreement that sets scope and fees.
+      </p>
+      <p>
+        Do not send confidential information you would only share inside an attorney-client relationship until such a relationship exists.
+      </p>
+      <h2>Using the site</h2>
+      <p>You may use the site to learn about the practice and to request a consultation. You may not:</p>
+      <ul>
+        <li>Interfere with the site or attempt to break its security</li>
+        <li>Scrape it in a way that degrades the service for others</li>
+        <li>Submit someone else’s personal information in the form without authority</li>
+        <li>Use the site to send unlawful, misleading, or abusive messages</li>
+      </ul>
+      <h2>Intellectual property</h2>
+      <p>
+        The text, the Privacy Ridge name, and the shield mark on this site belong to Privacy Ridge or its licensors. You may link to public pages. You may not copy the site’s content for a competing service or remove proprietary notices.
+      </p>
+      <h2>Third-party services</h2>
+      <p>
+        The consultation form may send information to HubSpot when that integration is turned on, and email goes through Microsoft 365. Those providers have their own terms. Links to other sites, if we add them, are not endorsements, and we are not responsible for those sites.
+      </p>
+      <h2>Disclaimer</h2>
+      <p>
+        The site is provided as-is. We do not warrant that it will be uninterrupted or error-free, or that information on it will stay complete as laws change. Privacy and AI rules move. Confirm anything important before you rely on it, and get advice suited to your situation before you act.
+      </p>
+      <h2>Limitation of liability</h2>
+      <p>
+        To the fullest extent the law allows, Privacy Ridge is not liable for indirect, incidental, special, consequential, or lost-profit damages arising out of your use of the site. Our total liability for a claim relating to the site will not exceed one hundred U.S. dollars. Nothing in these terms limits liability that cannot legally be limited.
+      </p>
+      <h2>Changes</h2>
+      <p>We may update these terms by posting a new version on this page. Continued use of the site after an update means you accept the new terms.</p>
+      <h2>Governing law</h2>
+      <p>
+        These terms are governed by the laws of the State of Texas, without regard to conflict-of-law rules. Courts located in Texas have exclusive jurisdiction over disputes arising out of the site, except where the law requires otherwise.
+      </p>
+      <h2>Contact</h2>
+      <p>
+        <a href={`mailto:${site.email}`}>{site.email}</a><br />
+        {site.phoneDisplay}
+      </p>
+    </div>
+  </article>
+</Base>

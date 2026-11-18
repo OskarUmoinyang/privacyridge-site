@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { steps } from '../data';
+
+const title = 'How we work | Privacy Ridge';
+const description =
+  'How a Privacy Ridge engagement runs: orient, assess, build, and stay. A short path from the first call to a privacy program a growing company can operate.';
+---
+
+<Base title={title} description={description}>
+  <header class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Approach</p>
+      <h1>A short path from uncertainty to a program you can run.</h1>
+      <p class="lede">
+        We do not begin with a hundred-page template. We begin with how the company actually works, then build only what that company needs.
+      </p>
+    </div>
+  </header>
+  <section class="section" style="padding-top: 1.75rem;">
+    <div class="wrap">
+      <ol class="steps">
+        {
+          steps.map((step) => (
+            <li>
+              <span class="n">{step.n}</span>
+              <h2>{step.title}</h2>
+              <p>{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="prose" style="margin-top: 2.5rem;">
+        <h2>What you leave with</h2>
+        <p>
+          A map of the personal data that matters, a ranked list of gaps, and the notices, records, or workflows we agreed to write. If the engagement continues, those artifacts stay current. If it was a project, you can run them without us.
+        </p>
+        <h2>How time is spent</h2>
+        <p>
+          Fractional work is a set number of hours or a defined scope, agreed in writing before it starts. Urgent stretches — a customer audit, a product launch, an incident — can be added. Quiet months can be lighter. The point is a lead who already knows the business, not a new briefing every time something comes up.
+        </p>
+        <h2>What we will not do</h2>
+        <p>
+          We will not hand you an enterprise binder and call it a program. We will not pretend a template notice is done if it does not match the product. And we will tell you when a question belongs with your outside counsel rather than with us.
+        </p>
+      </div>
+    </div>
+  </section>
+  <CtaBand />
+</Base>
