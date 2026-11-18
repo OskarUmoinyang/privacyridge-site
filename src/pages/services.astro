@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { services } from '../data';
+
+const title = 'Services | Privacy Ridge';
+const description =
+  'Fractional privacy leadership, U.S. state privacy compliance, GDPR, AI governance, assessments, data mapping, notices, vendor review, rights requests, training, incident readiness, and a program roadmap.';
+---
+
+<Base title={title} description={description}>
+  <header class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Services</p>
+      <h1>Twelve ways we help a smaller company get a real privacy program.</h1>
+      <p class="lede">
+        Take one workstream, or engage a fractional lead who carries several of them. Nothing here assumes you have a compliance department.
+      </p>
+    </div>
+  </header>
+  <section class="section" style="padding-top: 1.5rem;">
+    <div class="wrap">
+      {
+        services.map((service) => (
+          <article class="service-block" id={service.slug}>
+            <h2>{service.name}</h2>
+            <p>{service.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+  <CtaBand />
+</Base>

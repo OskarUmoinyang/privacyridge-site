@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../config';
+
+const title = 'About | Privacy Ridge';
+const description =
+  'Privacy Ridge is a Texas-based fractional data protection consultancy for small and mid-size U.S. companies, led by Oskar Umoinyang.';
+---
+
+<Base title={title} description={description}>
+  <header class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">About</p>
+      <h1>A small practice, on purpose.</h1>
+      <p class="lede">
+        Privacy Ridge helps growing companies treat personal data as a managed part of the business. We are based in Texas and work with companies across the United States.
+      </p>
+    </div>
+  </header>
+  <section class="section" style="padding-top: 1rem;">
+    <div class="wrap prose">
+      <p>
+        The practice is led by Oskar Umoinyang. His background is in privacy work inside operating companies, including roles at GFT Technologies and Deutsche Bank, and in legal practice before that. The work here sits with operators: founders, counsel at smaller companies, and the person who was handed privacy on top of another job.
+      </p>
+      <p>
+        We stay small so the person you speak with is the person who does the work. Engagements are set out in a written agreement. Until that agreement is signed, a conversation is a conversation — not legal advice, and not a consulting relationship.
+      </p>
+      <h2>Talk to us</h2>
+      <p>
+        <a href={`mailto:${site.email}`}>{site.email}</a><br />
+        <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
+      </p>
+      <p>
+        <a href="/our-why">Why the practice exists</a> · <a href="/how-we-work">How an engagement runs</a>
+      </p>
+    </div>
+  </section>
+  <CtaBand />
+</Base>

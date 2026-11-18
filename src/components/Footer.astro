@@ -1,0 +1,55 @@
+---
+import Logo from './Logo.astro';
+import { site } from '../config';
+
+const year = new Date().getFullYear();
+const links = [
+  { href: '/services', label: 'Services' },
+  { href: '/how-we-work', label: 'How we work' },
+  { href: '/why-choose-us', label: 'Why us' },
+  { href: '/our-why', label: 'Our why' },
+  { href: '/about-us', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+  { href: '/privacy-policy', label: 'Privacy policy' },
+  { href: '/terms-of-service', label: 'Terms of service' },
+];
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <a class="brand" href="/" aria-label="Privacy Ridge, home">
+        <Logo />
+        <span>
+          <span class="brand-name">Privacy Ridge</span>
+          <span class="brand-tag">Fractional data protection</span>
+        </span>
+      </a>
+      <p class="legal" style="border: 0; margin-top: 0.8rem; padding: 0;">
+        <a href={`mailto:${site.email}`}>{site.email}</a><br />
+        <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a><br />
+        {site.location}
+      </p>
+    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+      {
+        site.linkedinUrl ? (
+          <a href={site.linkedinUrl} rel="noopener noreferrer">
+            LinkedIn
+          </a>
+        ) : null
+      }
+    </nav>
+  </div>
+  <div class="wrap legal">
+    <p>
+      © <span data-year>{year}</span> Privacy Ridge. Consulting support for growing companies. A visit to this site, or a consultation request, is not an engagement.
+    </p>
+  </div>
+</footer>
+<script>
+  document.querySelectorAll('[data-year]').forEach((node) => {
+    node.textContent = String(new Date().getFullYear());
+  });
+</script>
