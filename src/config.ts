@@ -23,7 +23,7 @@ export const site = {
   linkedinUrl: 'https://www.linkedin.com/company/privacyridge/',
   hubspot: {
     portalId: '248037670',
-    formGuid: '41f019e8-8fb4-416a-a8cc-bd91ddca8261',
+    formGuid: '592680f9-9fff-4bd5-b116-30d0da013e4a',
     endpoint: 'https://api.hsforms.com/submissions/v3/integration/submit',
     fieldNames: {
       firstName: 'firstname',
