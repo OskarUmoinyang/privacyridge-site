@@ -1,0 +1,187 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../config';
+import { audiences, faqs, reasons, services, steps } from '../data';
+
+const title = 'Privacy Ridge | Fractional data protection for growing companies';
+const description =
+  'Privacy Ridge gives small and mid-size U.S. companies a senior privacy lead for state privacy laws, GDPR, and AI governance — without a full-time hire.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.name,
+  url: site.url,
+  email: site.email,
+  telephone: site.phoneTel,
+  description,
+  areaServed: { '@type': 'Country', name: 'United States' },
+  address: {
+    '@type': 'PostalAddress',
+    addressRegion: 'TX',
+    addressCountry: 'US',
+  },
+  ...(site.linkedinUrl ? { sameAs: [site.linkedinUrl] } : {}),
+};
+---
+
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Fractional data protection</p>
+        <h1>A privacy lead for companies that have outgrown guesswork.</h1>
+        <p class="lede">
+          Privacy Ridge is a boutique consultancy for small and mid-size U.S. businesses. We put a senior lead on state privacy laws, GDPR, and AI governance — and leave you with a program your team can run.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="/contact">Book a consultation</a>
+          <a class="quiet-link" href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="What the first conversation covers">
+        <p class="eyebrow">The first conversation</p>
+        <ol>
+          <li>
+            <strong>What you hold</strong>
+            Customers, employees, product data, and the tools in between.
+          </li>
+          <li>
+            <strong>What applies</strong>
+            Which state laws, GDPR duties, or AI rules are actually in scope.
+          </li>
+          <li>
+            <strong>What to do first</strong>
+            A sensible first month — or an honest no, if we are not the right fit.
+          </li>
+        </ol>
+      </aside>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="facts">
+      <div>
+        <p><strong>Built for growing companies</strong> Not a scaled-down version of an enterprise program.</p>
+      </div>
+      <div>
+        <p><strong>Privacy and AI together</strong> State laws, GDPR, and the tools already in the stack.</p>
+      </div>
+      <div>
+        <p><strong>Senior, fractional</strong> The person you speak with is the person who does the work.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" aria-labelledby="services-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Services</p>
+        <h2 id="services-title">The work we take on</h2>
+        <p>A defined project, or an ongoing fractional lead. Most conversations start with one of these.</p>
+      </div>
+      <div class="cards">
+        {
+          services.map((service, index) => (
+            <a class="card" href={`/services#${service.slug}`}>
+              <span class="index">{String(index + 1).padStart(2, '0')}</span>
+              <h3>{service.name}</h3>
+              <p>{service.summary}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;" aria-labelledby="approach-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How we work</p>
+        <h2 id="approach-title">From the first call to a program you can run</h2>
+        <p>
+          Four steps, sized to the company. <a href="/how-we-work">Read the full approach</a>.
+        </p>
+      </div>
+      <ol class="steps">
+        {
+          steps.map((step) => (
+            <li>
+              <span class="n">{step.n}</span>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;" aria-labelledby="who-title">
+    <div class="wrap split">
+      <div>
+        <h2 id="who-title">Who this is for</h2>
+        {
+          audiences.map((item) => (
+            <div class="point">
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </div>
+          ))
+        }
+      </div>
+      <div>
+        <h2 id="why-title">Why a fractional lead</h2>
+        {
+          reasons.map((item) => (
+            <div class="point">
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </div>
+          ))
+        }
+        <p style="margin-top: 1.25rem;"><a href="/why-choose-us">More on why companies choose us</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;" aria-labelledby="faq-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="faq-title">Questions we hear before the first call</h2>
+      </div>
+      <div class="faq">
+        {
+          faqs.map((item) => (
+            <details>
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="band-dark" aria-labelledby="contact-title">
+    <div class="wrap section contact-close">
+      <div>
+        <p class="eyebrow" style="color: #d5e4df;">Contact</p>
+        <h2 id="contact-title">Book a consultation</h2>
+        <p class="muted" style="margin-top: 0.8rem; max-width: 36rem;">
+          A short call is enough to tell whether we can help, and what the first month should cover. Tell us the company and what is pressing.
+        </p>
+      </div>
+      <div>
+        <a class="button inverse" href="/contact">Book a consultation</a>
+        <div class="contact-lines">
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+          <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
+          <span>{site.location}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

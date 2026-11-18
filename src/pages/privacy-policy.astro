@@ -1,0 +1,86 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config';
+
+const title = 'Privacy policy | Privacy Ridge';
+const description =
+  'How Privacy Ridge collects, uses, and shares personal information submitted through privacyridge.com, including the consultation form.';
+---
+
+<Base title={title} description={description}>
+  <header class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Privacy</p>
+      <h1>Privacy policy</h1>
+      <p class="lede">This policy describes how Privacy Ridge handles personal information collected through this website. It was last updated in 2026.</p>
+    </div>
+  </header>
+  <article class="section" style="padding-top: 1rem;">
+    <div class="wrap prose">
+      <h2>Who we are</h2>
+      <p>
+        Privacy Ridge (“we”) is a fractional data-protection consultancy based in Texas, United States. The site is {site.url}. You can reach us at <a href={`mailto:${site.email}`}>{site.email}</a> or {site.phoneDisplay}.
+      </p>
+      <h2>What we collect</h2>
+      <p>If you send the consultation form, we collect the details you choose to provide:</p>
+      <ul>
+        <li>First and last name</li>
+        <li>Email address</li>
+        <li>Company name</li>
+        <li>Phone number, if you include one</li>
+        <li>The services you select, and anything you add under other services</li>
+        <li>Your message</li>
+        <li>Whether you ask for occasional updates</li>
+        <li>The two required confirmations: that we may reply, and that the request is not itself an engagement</li>
+      </ul>
+      <p>
+        If you email or call us instead, we receive whatever you include in that message or call. Our email is hosted with Microsoft 365.
+      </p>
+      <p>
+        The site itself does not use advertising or analytics cookies. The host that serves the site may keep ordinary technical logs, such as IP address, browser type, and the page requested, to operate and secure it. We do not use those logs to build marketing profiles.
+      </p>
+      <h2>How we use it</h2>
+      <p>We use consultation details to:</p>
+      <ul>
+        <li>Reply to you and, if we both want to continue, arrange a conversation</li>
+        <li>Understand whether the work you describe is something we can take on</li>
+        <li>Send occasional notes on privacy and AI governance, only if you asked for them</li>
+        <li>Keep a record of the request for our own administration</li>
+      </ul>
+      <p>We do not sell personal information. We do not share it for cross-context behavioral advertising.</p>
+      <h2>Where it goes</h2>
+      <p>
+        Until a HubSpot form is connected, submissions open an email to {site.email} from your own mail program, and the contents are stored in our Microsoft 365 mailbox when you send that email.
+      </p>
+      <p>
+        When the form is connected to HubSpot (portal {site.hubspot.portalId}), the browser sends the fields directly to HubSpot’s submission service. HubSpot then stores them so we can read and reply. HubSpot processes that submission under its own terms. That connection may involve HubSpot cookies or similar technologies on submission; the rest of this site does not set them.
+      </p>
+      <p>
+        We also use the company that hosts this website. They process technical logs as part of serving the pages. We do not authorize them to use your information for their own marketing.
+      </p>
+      <h2>How long we keep it</h2>
+      <p>
+        We keep inquiry records for as long as we need them to respond, to decide on an engagement, and to meet ordinary business and legal record-keeping. If you asked for updates, we keep your contact details until you unsubscribe or ask us to stop. You may ask us to delete an inquiry that did not become an engagement, and we will do so unless we need to keep it for a legal reason.
+      </p>
+      <h2>Your choices</h2>
+      <p>
+        You may ask what we hold about you from a consultation request, ask us to correct it, or ask us to delete it, by emailing {site.email}. If you opted in to updates, every note includes a way to stop them, and you can email us to stop them as well.
+      </p>
+      <p>
+        Depending on where you live, including under U.S. state privacy laws, you may have additional rights to access, delete, or correct personal information, or to appeal a refusal. Email us and we will tell you how those rights apply to the information we hold. We will not discriminate against you for exercising them.
+      </p>
+      <h2>Children</h2>
+      <p>This site is not directed at children, and we do not knowingly collect personal information from anyone under 16.</p>
+      <h2>Security</h2>
+      <p>
+        We use reputable providers for email and, when connected, for form intake. No method of transmission or storage is perfectly secure. Please do not send sensitive account passwords or full identity documents through the form.
+      </p>
+      <h2>Changes</h2>
+      <p>If we change this policy, we will post the updated version on this page and change the “last updated” year or date.</p>
+      <h2>Contact</h2>
+      <p>
+        Privacy questions about this site: <a href={`mailto:${site.email}`}>{site.email}</a>, {site.phoneDisplay}.
+      </p>
+    </div>
+  </article>
+</Base>
