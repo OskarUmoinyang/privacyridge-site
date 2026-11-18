@@ -20,7 +20,7 @@ export const site = {
   phoneDisplay: '+1 (214) 377-4862',
   phoneTel: '+12143774862',
   location: 'Texas, United States',
-  linkedinUrl: '',
+  linkedinUrl: 'https://www.linkedin.com/company/privacyridge/',
   hubspot: {
     portalId: '248037670',
     formGuid: '41f019e8-8fb4-416a-a8cc-bd91ddca8261',
