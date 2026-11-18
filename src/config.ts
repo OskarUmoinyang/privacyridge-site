@@ -23,7 +23,7 @@ export const site = {
   linkedinUrl: '',
   hubspot: {
     portalId: '248037670',
-    formGuid: '',
+    formGuid: '41f019e8-8fb4-416a-a8cc-bd91ddca8261',
     endpoint: 'https://api.hsforms.com/submissions/v3/integration/submit',
     fieldNames: {
       firstName: 'firstname',
