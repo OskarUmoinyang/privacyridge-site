@@ -89,8 +89,8 @@ import { site } from '../config';
 
   <div class="hp" aria-hidden="true">
     <label>
-      Fax
-      <input type="text" name="company_fax" tabindex="-1" autocomplete="off" />
+      Leave this field empty
+      <input type="text" name="pr_hp_check" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-form-type="other" />
     </label>
   </div>
 
@@ -118,6 +118,7 @@ import { site } from '../config';
     buildHubSpotPayload,
     buildMailto,
     isHubSpotConfigured,
+    isHubSpotSuccess,
     submissionSummary,
     validateConsultation,
   } from '../lib/form.js';
@@ -196,13 +197,16 @@ import { site } from '../config';
         consentContact: data.get('consentContact') === 'on',
         consentNoRelationship: data.get('consentNoRelationship') === 'on',
         marketing: data.get('marketing') === 'on',
-        honeypot: String(data.get('company_fax') ?? ''),
+        honeypot: String(data.get('pr_hp_check') ?? ''),
       };
     };
 
-    const finish = (mode: 'hubspot' | 'mailto', value: ReturnType<typeof validateConsultation>['value'], mailto: string) => {
+    const finish = (mode: 'hubspot' | 'mailto' | 'failed', value: ReturnType<typeof validateConsultation>['value'], mailto: string) => {
       form.hidden = true;
       thankYou.hidden = false;
+      thankYou.dataset.delivery = mode;
+      const heading = thankYou.querySelector('h2');
+      if (heading) heading.textContent = mode === 'hubspot' ? 'Thank you.' : 'One more step: send the email.';
       const copy = thankYou.querySelector('#thank-you-copy');
       const list = thankYou.querySelector('#thank-you-summary');
       const mailLink = thankYou.querySelector<HTMLAnchorElement>('#mailto-fallback');
@@ -210,6 +214,8 @@ import { site } from '../config';
         copy.textContent =
           mode === 'hubspot'
             ? `Your consultation request is in. We will reply at ${value.email}.`
+            : mode === 'failed'
+            ? `We could not deliver your request online, so it has NOT been received yet. Your email app should open with it addressed to ${site.email}. Please send that message. If nothing opened, use the button below or copy these details into an email.`
             : `Your email app should open with this request addressed to ${site.email}. Send that message so it reaches us. If nothing opened, use the button below or copy these details into an email.`;
       }
       if (list) {
@@ -233,7 +239,11 @@ import { site } from '../config';
       clearErrors();
       const input = readInput();
       if (input.honeypot) {
-        finish('hubspot', validateConsultation(input).value, `mailto:${site.email}`);
+        // Suspected bot (or an autofill tool filled the hidden field). Never
+        // claim success without a real HubSpot response: offer email instead.
+        console.warn('Consultation form: hidden check field was filled; not sending to HubSpot.');
+        const value = validateConsultation(input).value;
+        finish('failed', value, buildMailto(value, site));
         return;
       }
       const result = validateConsultation(input);
@@ -264,11 +274,15 @@ import { site } from '../config';
             body: JSON.stringify(payload),
           },
         );
-        if (!response.ok) throw new Error(`HubSpot responded ${response.status}`);
+        const bodyText = await response.text().catch(() => '');
+        if (!isHubSpotSuccess(response)) {
+          throw new Error(`HubSpot responded ${response.status} (${response.type}): ${bodyText.slice(0, 500)}`);
+        }
         finish('hubspot', result.value, mailto);
-      } catch {
+      } catch (error) {
+        console.error('Consultation form: HubSpot delivery failed', error);
         window.location.href = mailto;
-        finish('mailto', result.value, mailto);
+        finish('failed', result.value, mailto);
       } finally {
         if (button) {
           button.disabled = false;

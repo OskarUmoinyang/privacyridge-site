@@ -18,6 +18,17 @@ export function isHubSpotConfigured(hubspot) {
 }
 
 /**
+ * True only for a genuine, readable 2xx response from the HubSpot submit API.
+ * An opaque (no-cors) or failed response is never treated as delivered.
+ * @param {{ ok?: boolean; status?: number; type?: string } | null | undefined} response
+ */
+export function isHubSpotSuccess(response) {
+  if (!response || response.type === 'opaque' || response.type === 'error') return false;
+  const status = Number(response.status);
+  return response.ok === true && status >= 200 && status < 300;
+}
+
+/**
  * @param {{
  *   firstName?: string;
  *   lastName?: string;

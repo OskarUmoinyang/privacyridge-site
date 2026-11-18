@@ -3,6 +3,7 @@ import {
   buildHubSpotPayload,
   buildMailto,
   isHubSpotConfigured,
+  isHubSpotSuccess,
   validateConsultation,
 } from '../src/lib/form.js';
 
@@ -100,5 +101,11 @@ const mailto = buildMailto(good.value, site);
 assert.ok(mailto.startsWith('mailto:info@privacyridge.com?'));
 assert.ok(decodeURIComponent(mailto).includes('Analytical Engines'));
 assert.ok(decodeURIComponent(mailto).includes('AI governance'));
+
+assert.equal(isHubSpotSuccess({ ok: true, status: 200, type: 'cors' }), true);
+assert.equal(isHubSpotSuccess({ ok: false, status: 400, type: 'cors' }), false);
+assert.equal(isHubSpotSuccess({ ok: false, status: 0, type: 'opaque' }), false, 'no-cors must not count');
+assert.equal(isHubSpotSuccess({ ok: true, status: 200, type: 'opaque' }), false);
+assert.equal(isHubSpotSuccess(null), false);
 
 console.log('form checks passed');
