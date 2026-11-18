@@ -1011,3 +1011,213 @@ legend {
     align-items: center;
   }
 }
+
+/* HubSpot embedded consultation form (legacy v2 embed, css: '').
+   Matches the site's own field, checkbox and button styles. */
+.hs-embed {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.hs-embed form,
+.hs-embed .hs-form {
+  display: grid;
+  gap: 0.95rem;
+}
+
+.hs-embed fieldset {
+  max-width: none !important;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.hs-embed fieldset.form-columns-2 {
+  display: grid;
+  gap: 0.95rem;
+}
+
+@media (min-width: 640px) {
+  .hs-embed fieldset.form-columns-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.hs-embed .hs-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: auto !important;
+  float: none !important;
+  margin: 0 !important;
+}
+
+.hs-embed .hs-form-field > label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.hs-embed .hs-form-required {
+  color: var(--pine);
+  margin-left: 0.15rem;
+}
+
+.hs-embed .hs-field-desc {
+  margin: 0 0 0.25rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.hs-embed .input {
+  margin: 0 !important;
+}
+
+.hs-embed input.hs-input:not([type="checkbox"]):not([type="radio"]),
+.hs-embed textarea.hs-input,
+.hs-embed select.hs-input {
+  font: inherit;
+  font-weight: 400;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 0.7rem 0.8rem;
+  min-height: 48px;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+.hs-embed textarea.hs-input {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.hs-embed .inputs-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.1rem;
+}
+
+.hs-embed .inputs-list label,
+.hs-embed .hs-form-booleancheckbox-display,
+.hs-embed .hs-form-checkbox-display {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  font-weight: 500;
+  padding: 0.4rem 0;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.hs-embed input[type="checkbox"].hs-input,
+.hs-embed input[type="radio"].hs-input {
+  width: 1.15rem;
+  height: 1.15rem;
+  min-height: 0;
+  margin: 0.2rem 0 0;
+  accent-color: var(--pine);
+  flex: none;
+}
+
+.hs-embed .hs-fieldtype-checkbox .input,
+.hs-embed .hs_services .input {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  padding: 0.5rem 0.85rem !important;
+}
+
+.hs-embed .hs-error-msgs {
+  list-style: none;
+  margin: 0.2rem 0 0;
+  padding: 0;
+}
+
+.hs-embed .hs-error-msg,
+.hs-embed .hs-error-msgs label {
+  color: var(--danger);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0;
+}
+
+.hs-embed .hs-input.invalid.error {
+  border-color: var(--danger);
+}
+
+.hs-embed .hs_error_rollup .hs-error-msgs {
+  background: #f8ecec;
+  border: 1px solid #e2c2c2;
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+}
+
+.hs-embed .legal-consent-container,
+.hs-embed .hs-richtext {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.hs-embed .hs_submit .actions {
+  margin: 0;
+  padding: 0;
+}
+
+.hs-embed input[type="submit"].hs-button,
+.hs-embed .hs-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  width: auto;
+  padding: 0.75rem 1.15rem;
+  border-radius: 8px;
+  border: 1px solid var(--pine);
+  background: var(--pine);
+  color: #f7f3ea;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.hs-embed .hs-button:hover,
+.hs-embed .hs-button:focus-visible {
+  background: var(--pine-deep);
+  border-color: var(--pine-deep);
+}
+
+.hs-embed .submitted-message {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+.hs-embed .hs-form-target iframe {
+  width: 100% !important;
+  border: 0;
+}
+
+/* Inside HubSpot's iframe (see ContactForm.astro styleFrame). */
+body.hs-embed-frame {
+  background: transparent !important;
+  margin: 0;
+  padding: 0 2px 4px;
+  display: block;
+  font-family: var(--sans);
+  color: var(--ink);
+}
+
+body.hs-embed-frame .hs-form {
+  max-width: none;
+  font-family: var(--sans);
+}

@@ -1,294 +1,104 @@
 ---
-import { services } from '../data';
 import { site } from '../config';
+
+const { portalId, formId, region, embedScript, target } = site.hubspot;
+const targetId = target.replace(/^#/, '');
 ---
 
-<form id="consult-form" method="post" action={`mailto:${site.email}`} enctype="text/plain" novalidate>
-  <div class="error-summary" id="form-errors" tabindex="-1" hidden>
-    <strong>Please fix the following:</strong>
-    <ul></ul>
+<div class="hs-embed" data-hs-portal={portalId} data-hs-form={formId} data-hs-region={region}>
+  <div id={targetId} class="hs-form-target" aria-live="polite">
+    <p class="fine hs-loading" id="hs-loading">Loading the consultation form…</p>
   </div>
-
-  <div class="form-row two">
-    <label class="field" for="firstName">
-      <span>First name <span class="req" aria-hidden="true">*</span></span>
-      <input id="firstName" name="firstName" type="text" autocomplete="given-name" required />
-      <span class="field-error" id="err-firstName" data-error-for="firstName" hidden></span>
-    </label>
-    <label class="field" for="lastName">
-      <span>Last name <span class="req" aria-hidden="true">*</span></span>
-      <input id="lastName" name="lastName" type="text" autocomplete="family-name" required />
-      <span class="field-error" id="err-lastName" data-error-for="lastName" hidden></span>
-    </label>
-  </div>
-
-  <div class="form-row two">
-    <label class="field" for="email">
-      <span>Email <span class="req" aria-hidden="true">*</span></span>
-      <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required />
-      <span class="field-error" id="err-email" data-error-for="email" hidden></span>
-    </label>
-    <label class="field" for="phone">
-      <span>Phone <span class="fine">(optional)</span></span>
-      <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" />
-      <span class="field-error" id="err-phone" data-error-for="phone" hidden></span>
-    </label>
-  </div>
-
-  <label class="field" for="company">
-    <span>Company name <span class="req" aria-hidden="true">*</span></span>
-    <input id="company" name="company" type="text" autocomplete="organization" required />
-    <span class="field-error" id="err-company" data-error-for="company" hidden></span>
-  </label>
-
-  <fieldset id="services" aria-required="true">
-    <legend>Services of interest <span class="req" aria-hidden="true">*</span></legend>
-    <p class="hint" id="services-hint">Select every area you want to discuss.</p>
-    <div class="checks services">
-      {
-        services.map((service) => (
-          <label class="check">
-            <input type="checkbox" name="services" value={service.name} />
-            <span>{service.name}</span>
-          </label>
-        ))
-      }
-    </div>
-    <p class="field-error" id="err-services" data-error-for="services" hidden></p>
-  </fieldset>
-
-  <label class="field" for="otherServices">
-    <span>Other services or context <span class="fine">(optional)</span></span>
-    <textarea id="otherServices" name="otherServices" rows="3"></textarea>
-    <span class="field-error" id="err-otherServices" data-error-for="otherServices" hidden></span>
-  </label>
-
-  <label class="field" for="message">
-    <span>What should we talk about? <span class="req" aria-hidden="true">*</span></span>
-    <textarea id="message" name="message" rows="5" required></textarea>
-    <span class="field-error" id="err-message" data-error-for="message" hidden></span>
-  </label>
-
-  <fieldset>
-    <legend class="visually-hidden">Consent</legend>
-    <label class="check">
-      <input id="consentContact" type="checkbox" name="consentContact" required />
-      <span>I agree that Privacy Ridge may use this information to respond to my inquiry, as described in the Privacy Policy. <span class="req" aria-hidden="true">*</span></span>
-    </label>
-    <p class="field-error" id="err-consentContact" data-error-for="consentContact" hidden></p>
-    <label class="check">
-      <input id="consentNoRelationship" type="checkbox" name="consentNoRelationship" required />
-      <span>I understand this request does not create a consulting or attorney-client relationship. <span class="req" aria-hidden="true">*</span></span>
-    </label>
-    <p class="field-error" id="err-consentNoRelationship" data-error-for="consentNoRelationship" hidden></p>
-    <label class="check">
-      <input type="checkbox" name="marketing" />
-      <span>Send occasional notes on privacy and AI governance. I can unsubscribe at any time.</span>
-    </label>
-  </fieldset>
-
-  <div class="hp" aria-hidden="true">
-    <label>
-      Leave this field empty
-      <input type="text" name="pr_hp_check" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-form-type="other" />
-    </label>
-  </div>
-
-  <div class="form-actions">
-    <button class="button" type="submit">Book a consultation</button>
+  <p class="fine hs-load-error" id="hs-load-error" hidden>
+    The form could not load in this browser (a privacy or ad blocker may be stopping it). Email us at
+    <a href={`mailto:${site.email}?subject=${encodeURIComponent('Consultation request — Privacy Ridge')}`}>{site.email}</a>
+    and we will reply to set a time.
+  </p>
+  <noscript>
     <p class="fine">
-      Required fields are marked with *. If this browser cannot deliver the form, it opens an email to
-      <a href={`mailto:${site.email}`}>{site.email}</a> so the request is not lost.
+      This form needs JavaScript. Email <a href={`mailto:${site.email}`}>{site.email}</a> or call
+      <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a> instead.
     </p>
-  </div>
-</form>
-
-<div class="thank-you" id="thank-you" hidden tabindex="-1">
-  <h2>Thank you.</h2>
-  <p id="thank-you-copy"></p>
-  <dl class="summary" id="thank-you-summary"></dl>
-  <p style="margin-top: 1rem;">
-    <a class="button secondary" id="mailto-fallback" href={`mailto:${site.email}`}>Email {site.email}</a>
+  </noscript>
+  <p class="fine hs-fallback">
+    Prefer email? <a href={`mailto:${site.email}`}>{site.email}</a>
   </p>
 </div>
 
-<script>
-  import { site } from '../config';
-  import {
-    buildHubSpotPayload,
-    buildMailto,
-    isHubSpotConfigured,
-    isHubSpotSuccess,
-    submissionSummary,
-    validateConsultation,
-  } from '../lib/form.js';
-
-  const form = document.querySelector<HTMLFormElement>('#consult-form');
-  const thankYou = document.querySelector<HTMLElement>('#thank-you');
-  if (form && thankYou) {
-    const summaryBox = form.querySelector<HTMLElement>('#form-errors');
-    const summaryList = summaryBox?.querySelector('ul');
-    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-
-    const fields = [
-      'firstName',
-      'lastName',
-      'email',
-      'company',
-      'phone',
-      'services',
-      'otherServices',
-      'message',
-      'consentContact',
-      'consentNoRelationship',
-    ];
-
-    const clearErrors = () => {
-      fields.forEach((name) => {
-        const slot = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
-        if (slot) {
-          slot.textContent = '';
-          slot.hidden = true;
-        }
-        form.querySelectorAll<HTMLElement>(`[name="${name}"]`).forEach((el) => {
-          el.removeAttribute('aria-invalid');
-        });
-      });
-      if (summaryBox) summaryBox.hidden = true;
-      if (summaryList) summaryList.innerHTML = '';
-    };
-
-    const showErrors = (errors: Record<string, string>) => {
-      if (!summaryList || !summaryBox) return;
-      clearErrors();
-      summaryBox.hidden = false;
-      Object.entries(errors).forEach(([name, message]) => {
-        const slot = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
-        if (slot) {
-          slot.textContent = message;
-          slot.hidden = false;
-        }
-        const target = form.querySelector<HTMLElement>(`[name="${name}"]`);
-        target?.setAttribute('aria-invalid', 'true');
-        if (slot) target?.setAttribute('aria-describedby', slot.id);
-        const item = document.createElement('li');
-        const link = document.createElement('a');
-        link.href = `#${name}`;
-        link.textContent = message;
-        item.append(link);
-        summaryList.append(item);
-      });
-      summaryBox.focus?.();
-      const first = form.querySelector<HTMLElement>('[aria-invalid="true"]');
-      first?.focus();
-    };
-
-    const readInput = () => {
-      const data = new FormData(form);
-      return {
-        firstName: String(data.get('firstName') ?? ''),
-        lastName: String(data.get('lastName') ?? ''),
-        email: String(data.get('email') ?? ''),
-        company: String(data.get('company') ?? ''),
-        phone: String(data.get('phone') ?? ''),
-        services: data.getAll('services').map(String),
-        otherServices: String(data.get('otherServices') ?? ''),
-        message: String(data.get('message') ?? ''),
-        consentContact: data.get('consentContact') === 'on',
-        consentNoRelationship: data.get('consentNoRelationship') === 'on',
-        marketing: data.get('marketing') === 'on',
-        honeypot: String(data.get('pr_hp_check') ?? ''),
-      };
-    };
-
-    const finish = (mode: 'hubspot' | 'mailto' | 'failed', value: ReturnType<typeof validateConsultation>['value'], mailto: string) => {
-      form.hidden = true;
-      thankYou.hidden = false;
-      thankYou.dataset.delivery = mode;
-      const heading = thankYou.querySelector('h2');
-      if (heading) heading.textContent = mode === 'hubspot' ? 'Thank you.' : 'One more step: send the email.';
-      const copy = thankYou.querySelector('#thank-you-copy');
-      const list = thankYou.querySelector('#thank-you-summary');
-      const mailLink = thankYou.querySelector<HTMLAnchorElement>('#mailto-fallback');
-      if (copy) {
-        copy.textContent =
-          mode === 'hubspot'
-            ? `Your consultation request is in. We will reply at ${value.email}.`
-            : mode === 'failed'
-            ? `We could not deliver your request online, so it has NOT been received yet. Your email app should open with it addressed to ${site.email}. Please send that message. If nothing opened, use the button below or copy these details into an email.`
-            : `Your email app should open with this request addressed to ${site.email}. Send that message so it reaches us. If nothing opened, use the button below or copy these details into an email.`;
-      }
-      if (list) {
-        list.innerHTML = '';
-        submissionSummary(value).forEach(([label, text]) => {
-          const wrap = document.createElement('div');
-          const dt = document.createElement('dt');
-          const dd = document.createElement('dd');
-          dt.textContent = label;
-          dd.textContent = text;
-          wrap.append(dt, dd);
-          list.append(wrap);
-        });
-      }
-      if (mailLink) mailLink.href = mailto;
-      thankYou.focus();
-    };
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      clearErrors();
-      const input = readInput();
-      if (input.honeypot) {
-        // Suspected bot (or an autofill tool filled the hidden field). Never
-        // claim success without a real HubSpot response: offer email instead.
-        console.warn('Consultation form: hidden check field was filled; not sending to HubSpot.');
-        const value = validateConsultation(input).value;
-        finish('failed', value, buildMailto(value, site));
-        return;
-      }
-      const result = validateConsultation(input);
-      if (!result.ok) {
-        showErrors(result.errors);
-        return;
-      }
-      const mailto = buildMailto(result.value, site);
-      if (!isHubSpotConfigured(site.hubspot)) {
-        window.location.href = mailto;
-        finish('mailto', result.value, mailto);
-        return;
-      }
-      if (button) {
-        button.disabled = true;
-        button.textContent = 'Sending…';
-      }
+<!-- HubSpot's hosted embed script (legacy form, na2). Do not self-host. -->
+<script is:inline charset="utf-8" type="text/javascript" src={embedScript}></script>
+<script is:inline define:vars={{ portalId, formId, region, target }}>
+  (function () {
+    var loading = document.getElementById('hs-loading');
+    var failed = document.getElementById('hs-load-error');
+    var done = false;
+    function showError() {
+      if (done) return;
+      done = true;
+      if (loading) loading.hidden = true;
+      if (failed) failed.hidden = false;
+    }
+    // Free/Starter portals render legacy forms inside a same-origin iframe and
+    // ignore `css`. Copy the site's stylesheets into that iframe so the form
+    // uses the site's own field, checkbox and button styles.
+    function styleFrame() {
+      var host = document.querySelector(target);
+      var frame = host && host.querySelector('iframe');
+      var doc = null;
       try {
-        const payload = buildHubSpotPayload(result.value, site, {
-          pageUri: window.location.href,
-          pageName: document.title,
-        });
-        const response = await fetch(
-          `${site.hubspot.endpoint}/${site.hubspot.portalId}/${site.hubspot.formGuid}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          },
-        );
-        const bodyText = await response.text().catch(() => '');
-        if (!isHubSpotSuccess(response)) {
-          throw new Error(`HubSpot responded ${response.status} (${response.type}): ${bodyText.slice(0, 500)}`);
-        }
-        finish('hubspot', result.value, mailto);
-      } catch (error) {
-        console.error('Consultation form: HubSpot delivery failed', error);
-        window.location.href = mailto;
-        finish('failed', result.value, mailto);
-      } finally {
-        if (button) {
-          button.disabled = false;
-          button.textContent = 'Book a consultation';
-        }
+        doc = frame && frame.contentDocument;
+      } catch (e) {
+        doc = null;
       }
-    });
-  }
+      if (!doc || !doc.head || doc.getElementById('pr-site-styles')) return;
+      var marker = doc.createElement('meta');
+      marker.id = 'pr-site-styles';
+      doc.head.appendChild(marker);
+      document.querySelectorAll('link[rel="stylesheet"], style').forEach(function (node) {
+        if (node.tagName === 'LINK') {
+          var link = doc.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = node.href;
+          doc.head.appendChild(link);
+        } else if (node.textContent && node.textContent.indexOf('hs-embed') !== -1) {
+          doc.head.appendChild(node.cloneNode(true));
+        }
+      });
+      if (doc.body) doc.body.classList.add('hs-embed', 'hs-embed-frame');
+    }
+    function create() {
+      if (!window.hbspt || !window.hbspt.forms) return false;
+      window.hbspt.forms.create({
+        region: region,
+        portalId: portalId,
+        formId: formId,
+        target: target,
+        css: '',
+        submitButtonClass: 'button hs-button primary',
+        onFormReady: function () {
+          done = true;
+          if (loading) loading.hidden = true;
+          styleFrame();
+        },
+      });
+      return true;
+    }
+    if (!create()) {
+      var tries = 0;
+      var timer = setInterval(function () {
+        tries += 1;
+        if (create()) clearInterval(timer);
+        else if (tries > 40) {
+          clearInterval(timer);
+          showError();
+        }
+      }, 250);
+    }
+    // If nothing rendered after 12s (blocked script or network), show email.
+    setTimeout(function () {
+      var host = document.querySelector(target);
+      var rendered = host && host.querySelector('form, iframe');
+      if (!rendered) showError();
+    }, 12000);
+  })();
 </script>

@@ -1,10 +1,10 @@
 /**
  * Site settings that should be edited in one place.
  *
- * HubSpot: create a form in portal 248037670, paste its GUID into
- * `hubspot.formGuid`, and align the internal field names below with that
- * form. Leave `formGuid` empty and the consultation form falls back to
- * mailto:info@privacyridge.com so a request is never dropped.
+ * HubSpot: the contact page embeds HubSpot legacy form `hubspot.formId` from
+ * portal 248037670 (na2). Field names and the hidden privacy_ridge_lead flag
+ * are managed in HubSpot. If the embed cannot load, the page points visitors
+ * to info@privacyridge.com.
  *
  * LinkedIn: paste a full https URL when a real profile exists. An empty
  * string hides the footer link (no placeholder icons).
@@ -21,35 +21,20 @@ export const site = {
   phoneTel: '+12143774862',
   location: 'Texas, United States',
   linkedinUrl: 'https://www.linkedin.com/company/privacyridge/',
+  /**
+   * The consultation form is HubSpot's own embedded form (legacy editor),
+   * rendered by HubSpot's hosted embed script. Custom API submissions were
+   * accepted (HTTP 200) but never recorded, so the site no longer posts
+   * to the Forms API itself. The hidden `privacy_ridge_lead` field defaults
+   * to true inside the HubSpot form, which keeps Privacy Ridge leads separate
+   * from The Goof Bar in the shared portal.
+   */
   hubspot: {
     portalId: '248037670',
-    formGuid: '592680f9-9fff-4bd5-b116-30d0da013e4a',
-    endpoint: 'https://api.hsforms.com/submissions/v3/integration/submit',
-    fieldNames: {
-      firstName: 'firstname',
-      lastName: 'lastname',
-      email: 'email',
-      company: 'company',
-      phone: 'phone',
-      services: 'services',
-      otherServices: 'other_services',
-      message: 'message',
-      consentContact: 'consent_to_contact',
-      consentNoRelationship: 'consent_no_relationship',
-      marketing: 'marketing_updates',
-    },
-    /**
-     * Fixed values sent with every submission so Privacy Ridge leads stay
-     * separate from The Goof Bar in the shared HubSpot portal.
-     * IMPORTANT: each key must also exist as a (hidden) field on the HubSpot
-     * form above. The v3 submit endpoint rejects fields that are not on the
-     * form, and hidden-field defaults are NOT applied to API submissions, so
-     * the site has to send the value itself. Add the hidden field to the
-     * form before deploying this change.
-     */
-    hiddenFields: {
-      privacy_ridge_lead: 'true',
-    },
+    formId: '592680f9-9fff-4bd5-b116-30d0da013e4a',
+    region: 'na2',
+    embedScript: 'https://js-na2.hsforms.net/forms/embed/v2.js',
+    target: '#hs-form',
   },
 } as const;
 

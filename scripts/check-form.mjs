@@ -1,111 +1,34 @@
+// Checks the HubSpot embedded consultation form wiring (no network calls).
 import assert from 'node:assert/strict';
-import {
-  buildHubSpotPayload,
-  buildMailto,
-  isHubSpotConfigured,
-  isHubSpotSuccess,
-  validateConsultation,
-} from '../src/lib/form.js';
+import { readFileSync } from 'node:fs';
 
-const site = {
-  url: 'https://privacyridge.com',
-  email: 'info@privacyridge.com',
-  hubspot: {
-    portalId: '248037670',
-    formGuid: '',
-    fieldNames: {
-      firstName: 'firstname',
-      lastName: 'lastname',
-      email: 'email',
-      company: 'company',
-      phone: 'phone',
-      services: 'services',
-      otherServices: 'other_services',
-      message: 'message',
-      consentContact: 'consent_to_contact',
-      consentNoRelationship: 'consent_no_relationship',
-      marketing: 'marketing_updates',
-    },
-    hiddenFields: {
-      privacy_ridge_lead: 'true',
-    },
-  },
-};
+const { site } = await import('../src/config.ts');
+const hs = site.hubspot;
 
-const valid = {
-  firstName: 'Ada',
-  lastName: 'Lovelace',
-  email: 'ada@example.com',
-  company: 'Analytical Engines',
-  phone: '',
-  services: ['Fractional privacy lead', 'AI governance'],
-  otherServices: '',
-  message: 'We need a privacy lead before our next enterprise deal.',
-  consentContact: true,
-  consentNoRelationship: true,
-  marketing: false,
-};
+const GUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-const good = validateConsultation(valid);
-assert.equal(good.ok, true, 'valid submission should pass');
-
-const missing = validateConsultation({ ...valid, email: 'not-an-email', services: [], consentContact: false });
-assert.equal(missing.ok, false);
-assert.ok(missing.errors.email);
-assert.ok(missing.errors.services);
-assert.ok(missing.errors.consentContact);
-
-const shortPhone = validateConsultation({ ...valid, phone: '123' });
-assert.ok(shortPhone.errors.phone);
-
-assert.equal(isHubSpotConfigured(site.hubspot), false, 'empty GUID must use mailto');
-assert.equal(isHubSpotConfigured({ ...site.hubspot, formGuid: 'not-a-guid' }), false);
+assert.equal(hs.portalId, '248037670', 'Privacy Ridge HubSpot portal');
+assert.equal(hs.formId, '592680f9-9fff-4bd5-b116-30d0da013e4a', 'legacy consultation form');
+assert.match(hs.formId, GUID_RE, 'formId must be a GUID');
+assert.equal(hs.region, 'na2', 'portal lives in the na2 data center');
 assert.equal(
-  isHubSpotConfigured({
-    ...site.hubspot,
-    formGuid: '11111111-2222-4333-8444-555555555555',
-  }),
-  true,
+  hs.embedScript,
+  `https://js-${hs.region}.hsforms.net/forms/embed/v2.js`,
+  'embed script host must match the region (HubSpot-hosted, not self-hosted)',
 );
+assert.match(hs.target, /^#[A-Za-z][\w-]*$/, 'target must be an id selector');
+assert.ok(!('endpoint' in hs) && !('formGuid' in hs), 'custom Forms API submit is retired');
+assert.ok(site.email.includes('@'), 'fallback email must be set');
 
-const payload = buildHubSpotPayload(good.value, site, {
-  pageUri: 'https://privacyridge.com/contact',
-  pageName: 'Contact',
-});
-const byName = Object.fromEntries(payload.fields.map((field) => [field.name, field.value]));
-assert.equal(byName.firstname, 'Ada');
-assert.equal(byName.email, 'ada@example.com');
-assert.equal(byName.services, 'Fractional privacy lead;AI governance');
-assert.equal(byName.consent_to_contact, 'true');
-assert.equal(payload.fields.some((field) => field.name === 'phone'), false);
-assert.equal(byName.privacy_ridge_lead, 'true', 'business-line flag must be sent');
-assert.equal(
-  payload.fields.filter((field) => field.name === 'privacy_ridge_lead').length,
-  1,
-  'business-line flag must be sent exactly once',
-);
-
-// Configs without hiddenFields must still work (no extra fields).
-const { hiddenFields: _omit, ...hubspotNoHidden } = site.hubspot;
-const plain = buildHubSpotPayload(good.value, { ...site, hubspot: hubspotNoHidden }, {});
-assert.equal(plain.fields.some((field) => field.name === 'privacy_ridge_lead'), false);
-
-// The real site config must carry the flag.
-const { site: realSite } = await import('../src/config.ts').catch(() => ({ site: null }));
-if (realSite) {
-  const real = buildHubSpotPayload(good.value, realSite, {});
-  assert.ok(real.fields.some((f) => f.name === 'privacy_ridge_lead' && f.value === 'true'));
+const component = readFileSync(new URL('../src/components/ContactForm.astro', import.meta.url), 'utf8');
+assert.ok(component.includes('src={embedScript}'), 'component loads the configured embed script');
+assert.ok(component.includes('hbspt.forms.create'), 'component creates the HubSpot form');
+for (const key of ['region', 'portalId', 'formId', 'target']) {
+  assert.ok(new RegExp(`${key}: ${key}`).test(component), `create() passes ${key}`);
 }
-
-const mailto = buildMailto(good.value, site);
-assert.ok(mailto.startsWith('mailto:info@privacyridge.com?'));
-assert.ok(decodeURIComponent(mailto).includes('Analytical Engines'));
-assert.ok(decodeURIComponent(mailto).includes('AI governance'));
-
-assert.equal(isHubSpotSuccess({ ok: true, status: 200, type: 'cors' }), true);
-assert.equal(isHubSpotSuccess({ ok: false, status: 400, type: 'cors' }), false);
-assert.equal(isHubSpotSuccess({ ok: false, status: 0, type: 'opaque' }), false, 'no-cors must not count');
-assert.equal(isHubSpotSuccess({ ok: true, status: 200, type: 'opaque' }), false);
-assert.equal(isHubSpotSuccess(null), false);
+assert.ok(component.includes('<noscript>'), 'noscript note present');
+assert.ok(component.includes('Prefer email?'), 'visible email fallback present');
+assert.ok(!/fetch\(|hsforms\.com\/submissions/.test(component), 'no custom submit fetch');
+assert.equal(component.match(/id=\{targetId\}/g)?.length, 1, 'exactly one embed target');
 
 console.log('form checks passed');
