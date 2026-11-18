@@ -95,6 +95,14 @@ export function buildHubSpotPayload(value, config, context) {
   if (value.phone) fields.push({ name: names.phone, value: value.phone });
   if (value.otherServices) fields.push({ name: names.otherServices, value: value.otherServices });
 
+  // Fixed hidden fields (e.g. privacy_ridge_lead=true) that tag every
+  // submission with its business line. See `hubspot.hiddenFields` in config.
+  /** @type {Record<string, string | boolean | number>} */
+  const hiddenFields = /** @type {any} */ (config.hubspot).hiddenFields ?? {};
+  for (const [name, fixed] of Object.entries(hiddenFields)) {
+    if (name) fields.push({ name, value: String(fixed) });
+  }
+
   return {
     fields,
     context: {

@@ -38,6 +38,18 @@ export const site = {
       consentNoRelationship: 'consent_no_relationship',
       marketing: 'marketing_updates',
     },
+    /**
+     * Fixed values sent with every submission so Privacy Ridge leads stay
+     * separate from The Goof Bar in the shared HubSpot portal.
+     * IMPORTANT: each key must also exist as a (hidden) field on the HubSpot
+     * form above. The v3 submit endpoint rejects fields that are not on the
+     * form, and hidden-field defaults are NOT applied to API submissions, so
+     * the site has to send the value itself. Add the hidden field to the
+     * form before deploying this change.
+     */
+    hiddenFields: {
+      privacy_ridge_lead: 'true',
+    },
   },
 } as const;
 

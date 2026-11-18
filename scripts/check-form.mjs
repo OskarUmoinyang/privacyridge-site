@@ -25,6 +25,9 @@ const site = {
       consentNoRelationship: 'consent_no_relationship',
       marketing: 'marketing_updates',
     },
+    hiddenFields: {
+      privacy_ridge_lead: 'true',
+    },
   },
 };
 
@@ -74,6 +77,24 @@ assert.equal(byName.email, 'ada@example.com');
 assert.equal(byName.services, 'Fractional privacy lead;AI governance');
 assert.equal(byName.consent_to_contact, 'true');
 assert.equal(payload.fields.some((field) => field.name === 'phone'), false);
+assert.equal(byName.privacy_ridge_lead, 'true', 'business-line flag must be sent');
+assert.equal(
+  payload.fields.filter((field) => field.name === 'privacy_ridge_lead').length,
+  1,
+  'business-line flag must be sent exactly once',
+);
+
+// Configs without hiddenFields must still work (no extra fields).
+const { hiddenFields: _omit, ...hubspotNoHidden } = site.hubspot;
+const plain = buildHubSpotPayload(good.value, { ...site, hubspot: hubspotNoHidden }, {});
+assert.equal(plain.fields.some((field) => field.name === 'privacy_ridge_lead'), false);
+
+// The real site config must carry the flag.
+const { site: realSite } = await import('../src/config.ts').catch(() => ({ site: null }));
+if (realSite) {
+  const real = buildHubSpotPayload(good.value, realSite, {});
+  assert.ok(real.fields.some((f) => f.name === 'privacy_ridge_lead' && f.value === 'true'));
+}
 
 const mailto = buildMailto(good.value, site);
 assert.ok(mailto.startsWith('mailto:info@privacyridge.com?'));
