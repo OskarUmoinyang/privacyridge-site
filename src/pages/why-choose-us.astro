@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { reasons } from '../data';
+
+const title = 'Why us | Privacy Ridge';
+const description =
+  'Why growing companies use Privacy Ridge: senior attention, a scope sized for a smaller business, privacy and AI governance together, and documents people will actually use.';
+---
+
+<Base title={title} description={description}>
+  <header class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Why us</p>
+      <h1>Senior privacy help, sized for the company you are.</h1>
+      <p class="lede">
+        Large firms staff a privacy office. Growing companies are pulled into the same questions — by customers, by state statutes, by the AI tools already in use — without that headcount. A fractional lead is the practical answer.
+      </p>
+    </div>
+  </header>
+  <section class="section" style="padding-top: 1.5rem;">
+    <div class="wrap split">
+      {
+        reasons.map((item) => (
+          <article class="point">
+            <h2>{item.title}</h2>
+            <p>{item.text}</p>
+          </article>
+        ))
+      }
+    </div>
+    <div class="wrap prose">
+      <h2>Compared with hiring</h2>
+      <p>
+        A full-time data protection officer is the right hire for some companies. For many others the work is real but not yet a forty-hour job, and the search for a senior person takes longer than the risk allows. Fractional support covers that stretch, and it can sit beside a later hire instead of competing with one.
+      </p>
+      <h2>Compared with a one-off project</h2>
+      <p>
+        A single policy sprint helps. It does not answer the vendor question that arrives in month three, or the new state law, or the AI feature a product manager is about to ship. Staying on means those questions have an owner. A project-only engagement is available when that is genuinely all you need.
+      </p>
+    </div>
+  </section>
+  <CtaBand />
+</Base>

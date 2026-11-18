@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+const title = 'Our why | Privacy Ridge';
+const description =
+  'Privacy Ridge exists so small and mid-size companies can meet privacy and AI governance duties without building an enterprise compliance team.';
+---
+
+<Base title={title} description={description}>
+  <header class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Our why</p>
+      <h1>The laws reached smaller companies before the teams did.</h1>
+      <p class="lede">
+        Privacy Ridge exists to close that gap: senior data-protection help for businesses that cannot staff a privacy office, and cannot afford to improvise.
+      </p>
+    </div>
+  </header>
+  <section class="section" style="padding-top: 1rem;">
+    <div class="wrap prose">
+      <p>
+        For a long time, privacy programs were something large companies built and everyone else borrowed a template for. That no longer holds. U.S. state laws reach companies well below the Fortune 500. Customers send security questionnaires to vendors who have never had a privacy notice reviewed. AI tools get switched on in sales, support, and the product itself, often with customer data already inside them.
+      </p>
+      <p>
+        The person who inherits that problem is rarely a privacy specialist. It is a founder, a general counsel covering twelve other subjects, or an operator who was handed “compliance” on top of the job they were hired to do. They do not need a lecture on the history of data protection. They need someone who can tell them what applies, what can wait, and what to write down so the next person is not starting over.
+      </p>
+      <p>
+        That is the work. Fractional, so it fits the company. Practical, so it survives contact with the way the business actually runs. And plain-spoken, because a program nobody understands is not a program.
+      </p>
+      <p>
+        <a href="/about-us">About the practice</a>
+      </p>
+    </div>
+  </section>
+  <CtaBand />
+</Base>

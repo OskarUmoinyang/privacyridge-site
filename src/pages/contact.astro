@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site } from '../config';
+
+const title = 'Book a consultation | Privacy Ridge';
+const description =
+  'Request a consultation with Privacy Ridge. Email info@privacyridge.com or call +1 (214) 377-4862. We reply to set a time.';
+---
+
+<Base title={title} description={description}>
+  <header class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Contact</p>
+      <h1>Book a consultation</h1>
+      <p class="lede">
+        Tell us the company and what is pressing. We reply by email to find a time. This form does not create an engagement.
+      </p>
+    </div>
+  </header>
+  <section class="section" style="padding-top: 1.25rem;" aria-labelledby="form-title">
+    <div class="wrap form-layout">
+      <div>
+        <h2 id="form-title" class="visually-hidden">Consultation request</h2>
+        <div class="point">
+          <h3>Direct</h3>
+          <p>
+            <a href={`mailto:${site.email}`}>{site.email}</a><br />
+            <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a><br />
+            {site.location}
+          </p>
+        </div>
+        <div class="point">
+          <h3>Before you write</h3>
+          <p>
+            Useful context is what you sell, whose data you hold, and what prompted the note — a customer question, a new state, a product change, an AI tool. You do not need a finished brief.
+          </p>
+        </div>
+        <p class="point">
+          <a href="/privacy-policy">Privacy policy</a>
+        </p>
+      </div>
+      <div class="form-card">
+        <h2>Send a request</h2>
+        <p class="form-note">
+          We use this only to answer you. Read the <a href="/privacy-policy">Privacy Policy</a> before you send it.
+        </p>
+        <ContactForm />
+      </div>
+    </div>
+  </section>
+</Base>
